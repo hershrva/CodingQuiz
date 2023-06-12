@@ -1,10 +1,19 @@
-var timerEl = doucument.getElementById('countdown');
-var mainEl = document.getElementById('main');
-var question = '';
+var timerEl = doucument.querySelector('.timer');
+var optionA = document.querySelectior(".option-A");
+var optionB = document.querySelectior(".option-B");
+var optionC = document.querySelectior(".option-C");
+var optionD = document.querySelectior(".option-D");
+var questionText = document.querySelector('question-text');
 var startBtn = document.querySelector('.start-btn');
+var submitBtn = document.querySelector('.submit-btn');
+var restartBtn = document.querySelector('.restart-btn');
+var quitBtn = document.querySelector('.quit-btn');
 var quizBox = document.querySelector('.quiz-box');
 var finalScore = document.querySelector('.results');
-var 
+var mediaBox = document.querySelector('media-box');
+var questionIndex = 0;
+
+
 var questionInfo = [
     {
         question: "Which of the following is not one of the four cornerstones of computational thinking?",
@@ -62,10 +71,18 @@ var questionInfo = [
         optionD:"$",
         answer:"$",
     }
-]
+];
+
+startBtn.onclick = () => {
+  mediaBox.classList.remove("start-text");
+  mediaBox.classList.add("quiz-box");
+  showQuestion(0);
+  showOptions(0);
+  startTimer();
+}
 
 // Timer that counts down from 5
-function countdown() {
+function startTimer() {
   var timeLeft = 75;
 
   // Use the `setInterval()` method to call a function to be executed every 1000 milliseconds
@@ -73,7 +90,7 @@ function countdown() {
     // As long as the `timeLeft` is greater than 1
     if (timeLeft > 1) {
       // Set the `textContent` of `timerEl` to show the remaining seconds
-      timerEl.textContent = 'Time: ' + timeLeft;
+      timerEl.textContent = "Time Left:" + timeLeft;
       // Decrement `timeLeft` by 1
       timeLeft--;
     } else {
@@ -87,21 +104,9 @@ function countdown() {
   }, 1000);
 }
 
-function displayMessage() {
-    var wordCount = 0;
-  
-    // Uses the `setInterval()` method to call a function to be executed every 1000 milliseconds
-    var msgInterval = setInterval(function () {
-      // If there are no more words left in the message
-      if (words[wordCount] === undefined) {
-        // Use `clearInterval()` to stop the timer
-        clearInterval(msgInterval);
-      } else {
-        // Display one word of the message
-        mainEl.textContent = words[wordCount];
-        wordCount++;
-      }
-    }, 1000);
-  }
+  function renderQuestion(){
+    var q= questions[questionIndex];
+    question.innerHTML = "<p>""</p>"
+  };
 
   countdown();
