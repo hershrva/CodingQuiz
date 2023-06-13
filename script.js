@@ -10,16 +10,17 @@ var submitBtn = document.querySelector('.submit-btn');
 var restartBtn = document.querySelector('.restart-btn');
 var quitBtn = document.querySelector('.quit-btn');
 var quizBox = document.querySelector('.quiz-box');
-var finalScore = document.querySelector('.results');
+var rightWrong = document.querySelector('.right-wrong');
 var mediaBox = document.querySelector('media-box');
 var results = document.querySelector(".results");
+var resultsScore = document.querySelector(".results-score");
 var highScores = document.querySelector(".high-scores");
 var timeLeft = 75;
 var timerInterval;
 var userScore = 0;
 var lastQuestion = questionInfo.length;
 var questionIndex = 0;
-var correctAnswer = "";
+var answerIsCorrect = "";
 
 
 
@@ -98,27 +99,18 @@ quitBtn.onClick = () => {
   mediaBox.classList.add("high-scores");
 }
 
-// Timer that counts down from 5
 function startTimer() {
   var timeLeft = 75;
-
-  // Use the `setInterval()` method to call a function to be executed every 1000 milliseconds
   var timeInterval = setInterval(function () {
-    // As long as the `timeLeft` is greater than 1
     if (timeLeft > 1) {
-      // Set the `textContent` of `timerEl` to show the remaining seconds
       timerEl.textContent = "Time Left:" + timeLeft + " seconds";
-      // Decrement `timeLeft` by 1
       timeLeft--;
     } else if (timeLeft >= 0) {
       timerEl.textContent = "Time Left:" + timeLeft + " second";
       timeLeft--;
     } else {
-      // Once `timeLeft` gets to 0, set `timerEl` to an empty string
       timerEl.textContent = '';
-      // Use `clearInterval()` to stop the timer
       clearInterval(timeInterval);
-      // Call the `displayMessage()` function
       showResults();
     }
   }, 1000);
@@ -131,7 +123,9 @@ function renderQuestion(){
   optionB.innerHTML = "<button class='option-btn'>" + q.optionB + "</button>";
   optionC.innerHTML = "<button class='option-btn'>" + q.optionC + "</button>";
   optionD.innerHTML = "<button class='option-btn'>" + q.optionD + "</button>";
-  if (questionIndex === lastQuestion) {
+  if (questionIndex !== 0 && questionIndex < lastQuestion) {
+    
+  } else if (questionIndex === lastQuestion) {
     return showResults();
     }
   }
@@ -155,9 +149,15 @@ function renderQuestion(){
   }
 
   function showResults() {
-
+    finalScore = userScore + timeLeft;
+    reultsScore.innerHTML("Your Score: " + finalScore);
   }
 
+submitBtn.addEventListener("click", addHighscore);
+
+function addHighScore() {
+  
+}
 
 
 restartBtn.onclick = ()=>{
