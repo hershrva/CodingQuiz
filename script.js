@@ -1,9 +1,10 @@
-var timerEl = doucument.querySelector('.timer');
-var optionA = document.querySelectior(".option-A");
-var optionB = document.querySelectior(".option-B");
-var optionC = document.querySelectior(".option-C");
-var optionD = document.querySelectior(".option-D");
-var questionText = document.querySelector('question-text');
+var optionA = document.querySelector(".option-A");
+var optionB = document.querySelector(".option-B");
+var optionC = document.querySelector(".option-C");
+var optionD = document.querySelector(".option-D");
+var timer = doucument.querySelector('.timer');
+var questionText = document.querySelector('.question-text');
+var startText = document.querySelector(".start-text")
 var startBtn = document.querySelector('.start-btn');
 var submitBtn = document.querySelector('.submit-btn');
 var restartBtn = document.querySelector('.restart-btn');
@@ -11,7 +12,15 @@ var quitBtn = document.querySelector('.quit-btn');
 var quizBox = document.querySelector('.quiz-box');
 var finalScore = document.querySelector('.results');
 var mediaBox = document.querySelector('media-box');
+var results = document.querySelector(".results");
+var highScores = document.querySelector(".high-scores");
+var timeLeft = 75;
+var timerInterval;
+var userScore = 0;
+var lastQuestion = questionInfo.length;
 var questionIndex = 0;
+var correctAnswer = "";
+
 
 
 var questionInfo = [
@@ -73,12 +82,20 @@ var questionInfo = [
     }
 ];
 
-startBtn.onclick = () => {
-  mediaBox.classList.remove("start-text");
-  mediaBox.classList.add("quiz-box");
-  showQuestion(0);
-  showOptions(0);
+startBtn.addEventListener("click", startQuiz);
+
+function startQuiz() {
+  startText.style.display = "none";
+  quizBox.style.display = "flex";
+  renderQuestion();
   startTimer();
+}
+
+quitBtn.onClick = () => {
+  results.style.display = "none";
+  highScores.style.display = "flex"
+  alert("Thanks for playing!");
+  mediaBox.classList.add("high-scores");
 }
 
 // Timer that counts down from 5
@@ -90,8 +107,11 @@ function startTimer() {
     // As long as the `timeLeft` is greater than 1
     if (timeLeft > 1) {
       // Set the `textContent` of `timerEl` to show the remaining seconds
-      timerEl.textContent = "Time Left:" + timeLeft;
+      timerEl.textContent = "Time Left:" + timeLeft + " seconds";
       // Decrement `timeLeft` by 1
+      timeLeft--;
+    } else if (timeLeft >= 0) {
+      timerEl.textContent = "Time Left:" + timeLeft + " second";
       timeLeft--;
     } else {
       // Once `timeLeft` gets to 0, set `timerEl` to an empty string
@@ -99,14 +119,52 @@ function startTimer() {
       // Use `clearInterval()` to stop the timer
       clearInterval(timeInterval);
       // Call the `displayMessage()` function
-      displayMessage();
+      showResults();
     }
   }, 1000);
 }
 
-  function renderQuestion(){
-    var q= questions[questionIndex];
-    question.innerHTML = "<p>""</p>"
-  };
+function renderQuestion(){
+  var q= questionInfo[questionIndex];
+  questionText.innerHTML = "<p>" + q.question + "</p>";
+  optionA.innerHTML = "<button class='option-btn'>" + q.optionA + "</button>";
+  optionB.innerHTML = "<button class='option-btn'>" + q.optionB + "</button>";
+  optionC.innerHTML = "<button class='option-btn'>" + q.optionC + "</button>";
+  optionD.innerHTML = "<button class='option-btn'>" + q.optionD + "</button>";
+  if (questionIndex === lastQuestion) {
+    return showResults();
+    }
+  }
 
-  countdown();
+  function checkAnswer(answer) {
+    var q = questionInfo[questionIndex];
+    if (answer === q.answer) {
+      alert("Correct!");
+      answerIsCorrect = true;
+    } else {
+      alert ("Sorry, Inccorect.")
+      andswerIsCorrect = false;
+      timeLeft - 10;
+    }
+    questionIndex++;
+    if (questionIndex === lastQuestion) {
+      showResults();
+    } else {
+      renderQuestion();
+    }
+  }
+
+  function showResults() {
+
+  }
+
+
+
+restartBtn.onclick = ()=>{
+  mediaBox.classList.add(startText);
+  mediaBox.classList.remove(results);
+  timeLeft = 75;
+  questionIndex = 0;
+  renderQuestion();
+  startTimer();
+}
